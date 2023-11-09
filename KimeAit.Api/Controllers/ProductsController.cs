@@ -31,7 +31,7 @@ public class ProductsController : ControllerBase
     {
         return Ok(await _dbContext
                         .Products
-                        .Where(p => p.Name.Contains(productName, StringComparison.InvariantCultureIgnoreCase))
+                        .Where(p => p.Name.ToLower().Contains(productName.ToLower()))
                         .ToListAsync());
     }
 }
