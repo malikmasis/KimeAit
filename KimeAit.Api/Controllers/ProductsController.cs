@@ -1,4 +1,7 @@
 using KimeAit.Api.Data;
+using KimeAit.Api.Entities;
+using KimeAit.Api.Migrations;
+using KimeAit.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +26,7 @@ public class ProductsController : ControllerBase
     {
         return Ok(await _dbContext
                         .Products
-                        .SingleOrDefaultAsync(p => p.Id == id));
+                        .SingleOrDefaultAsync(p => p.Id == id && p.IsApproved));
     }
 
     [HttpGet("search")]
@@ -31,7 +34,26 @@ public class ProductsController : ControllerBase
     {
         return Ok(await _dbContext
                         .Products
-                        .Where(p => p.Name.ToLower().Contains(productName.ToLower()))
+                        .Where(p => p.Name.ToLower().Contains(productName.ToLower()) && p.IsApproved)
                         .ToListAsync());
+    }
+
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateProduct(
+        [FromBody] ProductRequestModel product,
+        CancellationToken cancellationToken)
+    {
+        var createdProduct = new Product
+        {
+            Origin = product.Origin, Desc = product.Desc, Name = product.Name, IsHaram = product.IsHaram
+        };
+
+        _dbContext
+            .Products
+            .Add(createdProduct);
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return Created(string.Empty, createdProduct.Id);
     }
 }
