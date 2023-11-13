@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  kimeaitdb:
+    image: postgres
+  kimeait-api:
+    image: kimeait_image
+    build:
+      context: .
+      dockerfile: Dockerfile

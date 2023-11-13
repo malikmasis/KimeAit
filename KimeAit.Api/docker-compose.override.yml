@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  kimeaitdb:
+    container_name: kimeaitdb
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=philistine
+      - POSTGRES_DB=kimeait
+  kimeait-api:
+    container_name: kimeait-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionString=Server=kimeaitdb;Port=5432;Database=kimeait;User Id=admin;Password=philistine;"
+    ports:
+      - "3000:80"
+    depends_on:
+      - kimeaitdb
