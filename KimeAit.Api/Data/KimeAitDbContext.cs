@@ -11,7 +11,10 @@ public sealed class KimeAitDbContext : DbContext, IKimeAitDbContext
     }
 
     public DbSet<Product> Products { get; set; }
+
     public DbSet<UserAccount> UserAccounts { get; set; }
+
+    public DbSet<AlternativeProduct> AlternativeProducts { get; set; }
 
     public async Task MigrateAsync() => await Database.MigrateAsync();
 }

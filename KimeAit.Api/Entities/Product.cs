@@ -11,4 +11,6 @@ public class Product : BaseEntity
     public string Desc { get; set; }
 
     public bool IsApproved { get; private set; }
+
+    public IReadOnlyCollection<AlternativeProduct> AlternativeProducts { get; set; }
 }

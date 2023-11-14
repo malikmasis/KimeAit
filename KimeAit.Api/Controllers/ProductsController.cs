@@ -26,6 +26,7 @@ public class ProductsController : ControllerBase
     {
         return Ok(await _dbContext
                         .Products
+                        .Include(p => p.AlternativeProducts)
                         .SingleOrDefaultAsync(p => p.Id == id && p.IsApproved));
     }
 
@@ -34,6 +35,7 @@ public class ProductsController : ControllerBase
     {
         return Ok(await _dbContext
                         .Products
+                        .Include(p => p.AlternativeProducts)
                         .Where(p => p.Name.ToLower().Contains(productName.ToLower()) && p.IsApproved)
                         .ToListAsync());
     }
