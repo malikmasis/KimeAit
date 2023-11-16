@@ -1,6 +1,7 @@
 using KimeAit.Api.Data;
 using KimeAit.Api.Entities;
 using KimeAit.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -56,5 +57,17 @@ public class ProductsController : ControllerBase
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return Created(string.Empty, createdProduct.Id);
+    }
+
+    [Authorize]
+    [HttpPut("approve/{id}")]
+    public async Task<IActionResult> ApproveProduct(int id, CancellationToken cancellationToken)
+    {
+        return Ok(await _dbContext
+                        .Products
+                        .Where(p => p.Id == id && !p.IsApproved)
+                        .ExecuteUpdateAsync(spc
+                                                => spc.SetProperty(p => p.IsApproved, true),
+                                            cancellationToken));
     }
 }
