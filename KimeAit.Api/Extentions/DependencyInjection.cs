@@ -16,18 +16,17 @@ public static class DependencyInjection
     private static void AddPostgresql(IServiceCollection services,
                                       IConfiguration configuration)
     {
-        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        //AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
         var connectionString = configuration["ConnectionString"];
 
         services.AddDbContext<KimeAitDbContext>(options =>
         {
-            options.UseNpgsql(
+            options.UseSqlite(
                 connectionString,
                 sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(typeof(KimeAitDbContext).Assembly.FullName);
-                    sqlOptions.EnableRetryOnFailure();
                 });
 
             //options.UseSnakeCaseNamingConvention();

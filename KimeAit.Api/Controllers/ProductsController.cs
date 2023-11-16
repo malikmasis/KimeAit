@@ -1,6 +1,5 @@
 using KimeAit.Api.Data;
 using KimeAit.Api.Entities;
-using KimeAit.Api.Migrations;
 using KimeAit.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
