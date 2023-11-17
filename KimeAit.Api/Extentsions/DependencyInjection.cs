@@ -1,23 +1,21 @@
 using KimeAit.Api.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace KimeAit.Api.Extentions;
+namespace KimeAit.Api.Extensions;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
                                                        IConfiguration configuration)
     {
-        AddPostgresql(services, configuration);
+        AddSqlConfiguration(services, configuration);
 
         return services;
     }
 
-    private static void AddPostgresql(IServiceCollection services,
-                                      IConfiguration configuration)
+    private static void AddSqlConfiguration(IServiceCollection services,
+                                            IConfiguration configuration)
     {
-        //AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
         var connectionString = configuration["ConnectionString"];
 
         services.AddDbContext<KimeAitDbContext>(options =>
@@ -28,8 +26,6 @@ public static class DependencyInjection
                 {
                     sqlOptions.MigrationsAssembly(typeof(KimeAitDbContext).Assembly.FullName);
                 });
-
-            //options.UseSnakeCaseNamingConvention();
         });
 
         services.AddScoped<IKimeAitDbContext>(provider => provider.GetRequiredService<KimeAitDbContext>());

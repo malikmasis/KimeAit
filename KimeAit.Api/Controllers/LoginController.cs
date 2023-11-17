@@ -39,8 +39,6 @@ public sealed class LoginController : ControllerBase
             response = Ok(new { token = tokenString });
         }
 
-        _logger.LogError("Couldn't log in");
-
         return response;
     }
 
